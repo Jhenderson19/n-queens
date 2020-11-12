@@ -47,7 +47,7 @@ window.findNQueensSolution = function (n) {
   }
 
   var columnsIndexes = new Array(n).fill(0);
-  var board = new Board({n: n});
+  var board = new Board({ n: n });
   var conflict;
 
   for (let row = 0; row < n; row++) {
@@ -83,9 +83,110 @@ window.findNQueensSolution = function (n) {
 };
 
 // return the number of nxn chessboards that exist, with n queens placed such that none of them can attack each other
+
 window.countNQueensSolutions = function (n) {
-  var solutionCount = undefined; //fixme
+  var solutionCount = 0;
+  var columnIndexes = new BaseNNumber(n);
+  columnIndexes.setLength(n);
+  var row = 0;
+  // [0, 3, 5, 3, 2, 1]
+  // [0,0,0,1]
+  // [x, , , ]
+  // [ , , ,x]
+  // [ , ,x, ]
+  // [ ,x, , ]
+
+  while (columnIndexes.getLength() === n) {
+    columnIndexes.increment();
+    var counts = {};
+    var conflict = false;
+
+    for (var i = 0; i < columnIndexes.digits.length; i++) {
+      if (columnIndexes.digits[i] in counts) {
+        conflict = true;
+        break;
+      } else {
+        counts[columnIndexes.digits[i]] = 1;
+      }
+    }
+
+    if (conflict) {
+      continue;
+    }
+
+    for (var i = 0; i < columnIndexes.digits.length; i++) {
+      for (var j = i + 1; j < columnIndexes.digits.length; i++) {
+        if (columnIndex.digits[i] === columnIndex.digits[j] - (j - i) ||
+          columnIndex.digits[i] === columnIndex.digits[j] - (i - j)) {
+          conflict = true;
+          break;
+        }
+      }
+
+      if (conflict) {
+        break;
+      }
+    }
+
+    if (!conflict) {
+      solutionCount++;
+    }
+  }
 
   console.log('Number of solutions for ' + n + ' queens:', solutionCount);
   return solutionCount;
 };
+
+
+class BaseNNumber {
+  constructor(n) {
+    this.digits = [0];
+    this.base = n;
+  }
+
+  getStrValue() {
+    var outStr = '';
+    for (var i = 0; i < this.digits.length; i++) {
+      outStr += this.digits[i];
+    }
+    return outStr;
+  }
+
+  increment() {
+    this.digits[this.digits.length - 1]++;
+    this.carry();
+  }
+
+  carry() {
+    for (var i = this.digits.length - 1; i >= 0; i--) {
+      if (this.digits[i] > (this.base - 1)) {
+        if (i > 0) {
+          this.digits[i - 1]++;
+        } else {
+          this.digits = [1].concat(this.digits);
+          i++;
+        }
+        this.digits[i] = 0;
+      }
+    }
+  }
+
+
+  getLength() {
+    return this.digits.length;
+  }
+  setLength(newLength) {
+    var curLength = this.digits.length;
+
+    if (curLength > newLength) {
+      this.digits = this.digits.slice(curLength - newLength);
+    }
+    if (curLength < newLength) {
+      var arr = [];
+      for (var i = 0; i < newLength - curLength; i++) {
+        arr.push(0);
+      }
+      this.digits = arr.concat(this.digits);
+    }
+  }
+}
