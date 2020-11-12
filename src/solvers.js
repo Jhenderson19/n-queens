@@ -85,6 +85,10 @@ window.findNQueensSolution = function (n) {
 // return the number of nxn chessboards that exist, with n queens placed such that none of them can attack each other
 
 window.countNQueensSolutions = function (n) {
+  if (n < 2) {
+    return 1;
+  }
+
   var solutionCount = 0;
   var columnIndexes = new BaseNNumber(n);
   columnIndexes.setLength(n);
@@ -115,9 +119,19 @@ window.countNQueensSolutions = function (n) {
     }
 
     for (var i = 0; i < columnIndexes.digits.length; i++) {
-      for (var j = i + 1; j < columnIndexes.digits.length; i++) {
-        if (columnIndex.digits[i] === columnIndex.digits[j] - (j - i) ||
-          columnIndex.digits[i] === columnIndex.digits[j] - (i - j)) {
+      for (var j = i + 1; j < columnIndexes.digits.length; j++) {
+        // [1,3,0,2]
+        // i = 0, j = 1 diff 1 or -1
+        // 1, 3 diff = 2
+        // let currNum = columnIndexes.digits[i];
+        // let numCheck = columnIndexes.digits[j];
+        // let minusDistance = (columnIndexes.digits[j] - (j - i));
+        // let plusDistance = (columnIndexes.digits[j] - (i - j));
+        // n;
+        // debugger;
+
+        if (columnIndexes.digits[i] === (columnIndexes.digits[j] - (j - i)) ||
+          columnIndexes.digits[i] === (columnIndexes.digits[j] - (i - j))) {
           conflict = true;
           break;
         }
