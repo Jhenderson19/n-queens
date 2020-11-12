@@ -86,39 +86,50 @@ window.findNQueensSolution = function (n) {
 
 
 window.countNQueensSolutions = function (n) {
+
+  if (n < 2) {
+    return 1;
+  }
+
   var solutionCount = 0;
   var digits = [];
   var depth = 0;
 
-  var nextPromisingNumber = function (minimum) {
+  var nextPromisingNumber = function (minimum, digits, depth) {
     if (minimum === undefined) {
       minimum = 0;
     }
 
     var digitsPlusDepth = digits.map(e => e + depth);
-    var promising = minimum + 1;
-    while (digits.indexOf(promising) !== -1 && digitsPlusDepth.indexOf(promising) !== -1) {
+    var digitsMinusDepth = digits.map(e => e - depth);
+
+    var promising = minimum;
+    do {
       promising++;
-    }
+    } while (digits.includes(promising) || digitsPlusDepth.includes(promising) || digitsMinusDepth.includes(promising));
 
     if (promising < n) {
       return promising;
     }
+    return undefined;
   };
 
   var getNextPiece = function (digits, depth) {
     if (depth === n) {
+      console.log('Solution!: ' + digits);
       solutionCount++;
       return;
     }
 
     digits[depth] = -1;
     while (digits[depth] !== undefined && digits[depth] < n) {
-      digits[depth] = nextPromisingNumber(digits[depth]);
-      getNextPiece(digits, depth + 1);
+      digits[depth] = nextPromisingNumber(digits[depth], _.clone(digits), depth);
+      if (digits[depth] !== undefined && digits[depth] < n) {
+        getNextPiece(_.clone(digits), depth + 1);
+      }
     }
   };
-
+  getNextPiece(digits, 0);
   console.log('Number of solutions for ' + n + ' queens:', solutionCount);
   return solutionCount;
 };
