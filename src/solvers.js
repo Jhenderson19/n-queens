@@ -100,13 +100,13 @@ window.countNQueensSolutions = function (n) {
       minimum = 0;
     }
 
-    var digitsPlusDepth = digits.map(e => e + depth);
-    var digitsMinusDepth = digits.map(e => e - depth);
+    var diagonal1 = digits.map((e, i) => e + depth - i);
+    var diagonal2 = digits.map((e, i) => e - depth + i);
 
     var promising = minimum;
     do {
       promising++;
-    } while (digits.includes(promising) || digitsPlusDepth.includes(promising) || digitsMinusDepth.includes(promising));
+    } while (digits.includes(promising) || diagonal1.includes(promising) || diagonal2.includes(promising));
 
     if (promising < n) {
       return promising;
@@ -123,7 +123,7 @@ window.countNQueensSolutions = function (n) {
 
     digits[depth] = -1;
     while (digits[depth] !== undefined && digits[depth] < n) {
-      digits[depth] = nextPromisingNumber(digits[depth], _.clone(digits), depth);
+      digits[depth] = nextPromisingNumber(digits[depth], _.clone(digits.slice(0, digits.length - 1)), depth);
       if (digits[depth] !== undefined && digits[depth] < n) {
         getNextPiece(_.clone(digits), depth + 1);
       }
