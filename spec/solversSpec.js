@@ -1,13 +1,13 @@
-describe('solvers', function() {
-  window.displayBoard = function() {};
+describe('solvers', function () {
+  window.displayBoard = function () { };
 
-  describe('findNRooksSolution()', function() {
+  describe('findNRooksSolution()', function () {
 
-    it('finds a valid solution for n of 1-8', function() {
-      _.range(1, 9).map(function(n) {
+    it('finds a valid solution for n of 1-8', function () {
+      _.range(1, 9).map(function (n) {
         var solutionBoard = new Board(findNRooksSolution(n));
-        var numPieces = _.reduce(solutionBoard.rows(), function(memo, row) {
-          return memo + _.reduce(row, function(memo, col) {
+        var numPieces = _.reduce(solutionBoard.rows(), function (memo, row) {
+          return memo + _.reduce(row, function (memo, col) {
             return memo + col;
           }, 0);
         }, 0);
@@ -20,10 +20,10 @@ describe('solvers', function() {
 
   });
 
-  describe('countNRooksSolutions()', function() {
+  describe('countNRooksSolutions()', function () {
 
-    it('finds the number of valid solutions for n of 1-8', function() {
-      _.range(1, 9).map(function(n) {
+    it('finds the number of valid solutions for n of 1-8', function () {
+      _.range(1, 9).map(function (n) {
         var solutionCount = countNRooksSolutions(n);
         var expectedSolutionCount = [1, 1, 2, 6, 24, 120, 720, 5040, 40320][n];
 
@@ -33,14 +33,14 @@ describe('solvers', function() {
 
   });
 
-  describe('findNQueensSolution()', function() {
+  describe('findNQueensSolution()', function () {
 
-    it('finds a valid solution for n of 0-7', function() {
+    it('finds a valid solution for n of 0-7', function () {
       // Skip 2 and 3 because they have no solution.
-      [0, 1, 4, 5, 6, 7, 8].map(function(n) {
+      [0, 1, 4, 5, 6, 7, 8].map(function (n) {
         var solutionBoard = new Board(findNQueensSolution(n));
-        var numPieces = _.reduce(solutionBoard.rows(), function(memo, row) {
-          return memo + _.reduce(row, function(memo, col) {
+        var numPieces = _.reduce(solutionBoard.rows(), function (memo, row) {
+          return memo + _.reduce(row, function (memo, col) {
             return memo + col;
           }, 0);
         }, 0);
@@ -53,8 +53,8 @@ describe('solvers', function() {
       // Check 2 and 3 for no solution
       [2, 3].map(function (n) {
         var solutionBoard = new Board(findNQueensSolution(n));
-        var numPieces = _.reduce(solutionBoard.rows(), function(memo, row) {
-          return memo + _.reduce(row, function(memo, col) {
+        var numPieces = _.reduce(solutionBoard.rows(), function (memo, row) {
+          return memo + _.reduce(row, function (memo, col) {
             return memo + col;
           }, 0);
         }, 0);
@@ -66,10 +66,20 @@ describe('solvers', function() {
 
   });
 
-  describe('countNQueensSolutions()', function() {
+  describe('countNQueensSolutions()', function () {
 
-    it('finds the number of valid solutions for n of 0-8', function() {
-      _.range(0, 13).map(function(n) {
+    it('finds the number of valid solutions for even n of 0-12', function () {
+      _.range(0, 6).map(function (n) {
+        var solutionCount = countNQueensSolutions(n * 2);
+        var expectedSolutionCount = [1, 0, 2, 4, 92, 724][n];
+
+        expect(solutionCount).to.be.equal(expectedSolutionCount);
+      });
+    });
+
+
+    it('finds the number of valid solutions for n of 0-8', function () {
+      _.range(0, 13).map(function (n) {
         var solutionCount = countNQueensSolutions(n);
         var expectedSolutionCount = [1, 1, 0, 0, 2, 10, 4, 40, 92, 352, 724, 2680, 14200][n];
 

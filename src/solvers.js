@@ -84,6 +84,15 @@ window.findNQueensSolution = function (n) {
 
 // return the number of nxn chessboards that exist, with n queens placed such that none of them can attack each other
 
+// [1,3,0,2]
+// [2,0,3,1]
+// [1,3,0,2]
+window.rotateBoard180 = function (digits) {
+  digits.reverse();
+  rotatedBoard = _.clone(digits).map(function(e) {
+    return (n - 1) - e;
+  });
+};
 
 window.countNQueensSolutions = function (n) {
 
@@ -93,6 +102,7 @@ window.countNQueensSolutions = function (n) {
 
   var solutionCount = 0;
   var digits = [];
+  var solutions = [];
   var depth = 0;
 
   var nextPromisingNumber = function (minimum, digits, depth) {
@@ -111,13 +121,19 @@ window.countNQueensSolutions = function (n) {
     if (promising < n) {
       return promising;
     }
+
     return undefined;
   };
 
   var getNextPiece = function (digits, depth) {
     if (depth === n) {
       console.log('Solution!: ' + digits);
-      solutionCount++;
+      solutions.push(_.clone(digits));
+      solutionCount += 2;
+      return;
+    }
+
+    if (digits[0] > Math.ceil(n / 2)) {
       return;
     }
 
@@ -129,7 +145,27 @@ window.countNQueensSolutions = function (n) {
       }
     }
   };
+
   getNextPiece(digits, 0);
+
+  var stringSolutions = solutions.map(e => e.join(''));
+
+  solutionCount = stringSolutions.reduce(function(acc, e, i) {
+    console.log(stringSolutions);
+    var reversedSolution = e.split('').reverse().join('');
+    console.log(reversedSolution + ' reversed');
+    if (stringSolutions.indexOf(e.toString()) !== i) {
+      return acc;
+    }
+    if (stringSolutions.includes(reversedSolution)) {
+      return acc + 1;
+    } else {
+      return acc + 2;
+    }
+  }, 0);
+
+  console.log(solutions);
+
   console.log('Number of solutions for ' + n + ' queens:', solutionCount);
   return solutionCount;
 };
