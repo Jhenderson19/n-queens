@@ -89,7 +89,7 @@ window.findNQueensSolution = function (n) {
 // [1,3,0,2]
 window.rotateBoard180 = function (digits) {
   digits.reverse();
-  rotatedBoard = _.clone(digits).map(function(e) {
+  rotatedBoard = _.clone(digits).map(function (e) {
     return (n - 1) - e;
   });
 };
@@ -128,12 +128,19 @@ window.countNQueensSolutions = function (n) {
   var getNextPiece = function (digits, depth) {
     if (depth === n) {
       console.log('Solution!: ' + digits);
-      solutions.push(_.clone(digits));
-      solutionCount += 2;
+      // solutions.push(_.clone(digits));
+      solutionCount++;
+      // n: 4 double count if digits[0] is 1 or less
+      // n: 5 double count if digits[0] is 1 or less
+      // n: 6 double count if digits[0] is 2 or less
+      if (digits[0] < Math.floor(n / 2)) {
+        solutionCount++;
+      }
+
       return;
     }
 
-    if (digits[0] > Math.ceil(n / 2)) {
+    if (digits[0] >= Math.ceil(n / 2)) {
       return;
     }
 
@@ -148,23 +155,23 @@ window.countNQueensSolutions = function (n) {
 
   getNextPiece(digits, 0);
 
-  var stringSolutions = solutions.map(e => e.join(''));
+  // var stringSolutions = solutions.map(e => e.join(''));
 
-  solutionCount = stringSolutions.reduce(function(acc, e, i) {
-    console.log(stringSolutions);
-    var reversedSolution = e.split('').reverse().join('');
-    console.log(reversedSolution + ' reversed');
-    if (stringSolutions.indexOf(e.toString()) !== i) {
-      return acc;
-    }
-    if (stringSolutions.includes(reversedSolution)) {
-      return acc + 1;
-    } else {
-      return acc + 2;
-    }
-  }, 0);
+  // solutionCount = stringSolutions.reduce(function (acc, e, i) {
+  //   console.log(stringSolutions);
+  //   var reversedSolution = e.split('').reverse().join('');
+  //   console.log(reversedSolution + ' reversed');
+  //   if (stringSolutions.indexOf(e.toString()) !== i) {
+  //     return acc;
+  //   }
+  //   if (stringSolutions.includes(reversedSolution)) {
+  //     return acc + 1;
+  //   } else {
+  //     return acc + 2;
+  //   }
+  // }, 0);
 
-  console.log(solutions);
+  // console.log(solutions);
 
   console.log('Number of solutions for ' + n + ' queens:', solutionCount);
   return solutionCount;
