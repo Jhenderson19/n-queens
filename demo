@@ -1,0 +1,33 @@
+if we have checked all solutions beginning with 0, we no longer need to check solutions that end in 0
+
+    var maxCol;
+    if (depth < Math.floor(n/2)) {
+      maxCol = n;
+    } else {
+      maxCol =
+    }
+
+    while (digits[depth] !== undefined && digits[depth] < maxCol) {
+
+digits[0]: 1
+go through n - 1 at digits[digits.length - 1]
+
+if n is 4 and digits depth is so go through n - digits[0]
+digits[depth] < digits[n
+
+solutions;
+if n / 2
+  n / 2 - 1
+
+// next promising number change
+
+[1,3,0,2]
+[2,0,3,1]
+
+[1,3,5,0,2,4]
+[4,2,0,]
+
+[[0,1,2,3][0,1,2,3][0,1,2,3][1,2,3]]
+
+// O(n^2)
+solutions.reduce((acc,e) => solutions.map(e => e.toString()).includes(e.reverse().toString()) ? acc + 1 : acc + 2, 0)
